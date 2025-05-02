@@ -84,10 +84,6 @@ The application uses the following database tables:
 - Maintenance_Assignments
 - Property_Images
 
-## Screenshots
-
-[Include screenshots of the application here]
-
 ## License
 
 [Include license information here] 
