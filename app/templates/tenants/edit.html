@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Tenant - Real Estate Management{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Edit Tenant</h1>
+        <a href="{{ url_for('tenants.view_tenant', tenant_id=tenant.tenant_id) }}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Tenant Details
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form method="post" action="{{ url_for('tenants.edit_tenant', tenant_id=tenant.tenant_id) }}">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="first_name" class="form-label">First Name*</label>
+                        <input type="text" name="first_name" id="first_name" class="form-control" value="{{ tenant.first_name }}" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="last_name" class="form-label">Last Name*</label>
+                        <input type="text" name="last_name" id="last_name" class="form-control" value="{{ tenant.last_name }}" required>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">Email*</label>
+                        <input type="email" name="email" id="email" class="form-control" value="{{ tenant.email }}" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="phone" class="form-label">Phone Number*</label>
+                        <input type="tel" name="phone" id="phone" class="form-control" value="{{ tenant.phone }}" required>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="date_of_birth" class="form-label">Date of Birth</label>
+                        <input type="date" name="date_of_birth" id="date_of_birth" class="form-control" value="{{ tenant.date_of_birth }}">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="occupation" class="form-label">Occupation</label>
+                        <input type="text" name="occupation" id="occupation" class="form-control" value="{{ tenant.occupation }}">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="identification_number" class="form-label">Identification Number</label>
+                        <input type="text" name="identification_number" id="identification_number" class="form-control" value="{{ tenant.identification_number }}">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="registration_date" class="form-label">Registration Date*</label>
+                        <input type="date" name="registration_date" id="registration_date" class="form-control" value="{{ tenant.registration_date }}" required>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{{ url_for('tenants.view_tenant', tenant_id=tenant.tenant_id) }}" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">* Required fields</small>
+        </div>
+    </div>
+</div>
+{% endblock %} 

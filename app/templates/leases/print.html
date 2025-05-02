@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lease Agreement #{{ lease.lease_id }}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        .info-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .info-label {
+            width: 200px;
+            font-weight: bold;
+        }
+        .info-value {
+            flex: 1;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .footer {
+            margin-top: 50px;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+        .signature {
+            margin-top: 40px;
+        }
+        .signature-line {
+            display: inline-block;
+            width: 300px;
+            border-top: 1px solid #333;
+            margin-top: 60px;
+            margin-right: 20px;
+        }
+        @media print {
+            body {
+                margin: 0;
+                padding: 15mm;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="no-print" style="margin-bottom: 20px; text-align: center;">
+        <button onclick="window.print()">Print Lease</button>
+        <a href="{{ url_for('leases.view_lease', lease_id=lease.lease_id) }}">
+            <button>Back to Lease</button>
+        </a>
+    </div>
+
+    <div class="header">
+        <h1>RESIDENTIAL LEASE AGREEMENT</h1>
+        <p>Lease #{{ lease.lease_id }}</p>
+    </div>
+
+    <div class="section">
+        <div class="section-title">1. PARTIES</div>
+        <p>This Lease Agreement (hereinafter referred to as the "Agreement") is made and entered into on {{ lease.start_date }}, by and between:</p>
+        <p><strong>LANDLORD:</strong> Property Owner</p>
+        <p><strong>TENANT:</strong> {{ lease.tenant_first_name }} {{ lease.tenant_last_name }}</p>
+    </div>
+
+    <div class="section">
+        <div class="section-title">2. PROPERTY</div>
+        <p>Landlord hereby leases to Tenant, and Tenant hereby leases from Landlord, for residential purposes only, the premises located at:</p>
+        <p><strong>{{ lease.address }}, {{ lease.city }}, {{ lease.state }}</strong></p>
+        <p>Property Type: {{ lease.property_type|replace('_', ' ')|capitalize }}</p>
+    </div>
+
+    <div class="section">
+        <div class="section-title">3. TERM</div>
+        <div class="info-row">
+            <div class="info-label">Lease Start Date:</div>
+            <div class="info-value">{{ lease.start_date }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Lease End Date:</div>
+            <div class="info-value">{{ lease.end_date }}</div>
+        </div>
+        <p>Unless terminated sooner, or extended by mutual written agreement.</p>
+    </div>
+
+    <div class="section">
+        <div class="section-title">4. RENT</div>
+        <div class="info-row">
+            <div class="info-label">Monthly Rent:</div>
+            <div class="info-value">₹{{ "%.2f"|format(lease.monthly_rent) }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Payment Due Date:</div>
+            <div class="info-value">{{ lease.payment_due_day }}{{ 'st' if lease.payment_due_day == 1 else 'th' }} day of each month</div>
+        </div>
+        <p>Late payments are subject to a late fee of 5% of the monthly rent.</p>
+    </div>
+
+    <div class="section">
+        <div class="section-title">5. SECURITY DEPOSIT</div>
+        <div class="info-row">
+            <div class="info-label">Security Deposit:</div>
+            <div class="info-value">₹{{ "%.2f"|format(lease.security_deposit) }}</div>
+        </div>
+        <p>The security deposit shall be held by Landlord as security for Tenant's faithful performance of all terms of this Agreement. The security deposit is not to be used as last month's rent.</p>
+    </div>
+
+    <div class="section">
+        <div class="section-title">6. UTILITIES AND SERVICES</div>
+        <p>Tenant shall be responsible for the payment of all utilities and services to the premises, except those specifically listed below as the Landlord's responsibility:</p>
+        <p>Landlord's responsibility: Common area maintenance and structural repairs.</p>
+    </div>
+
+    <div class="section">
+        <div class="section-title">7. USE AND OCCUPANCY</div>
+        <p>The premises shall be used solely as a residential dwelling. Only the persons named as Tenant in this Agreement shall occupy the premises.</p>
+    </div>
+
+    <div class="section">
+        <div class="section-title">8. ADDITIONAL TERMS AND CONDITIONS</div>
+        <p>This Agreement is subject to all additional terms and conditions as may be attached hereto and made a part of this Agreement.</p>
+    </div>
+
+    <div class="footer">
+        <p>IN WITNESS WHEREOF, the parties have executed this Agreement on the date first above written.</p>
+        
+        <div class="signature">
+            <div class="signature-line"></div>
+            <div>Landlord Signature</div>
+        </div>
+        
+        <div class="signature">
+            <div class="signature-line"></div>
+            <div>Tenant Signature: {{ lease.tenant_first_name }} {{ lease.tenant_last_name }}</div>
+        </div>
+    </div>
+</body>
+</html> 

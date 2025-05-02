@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Record Payment - Real Estate Management{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('leases.list_leases') }}">Leases</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('leases.view_lease', lease_id=lease.lease_id) }}">Lease #{{ lease.lease_id }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Record Payment</li>
+        </ol>
+    </nav>
+
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h4 class="card-title mb-0">Record Payment for Lease #{{ lease.lease_id }}</h4>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-info">
+                <p>Property: <strong>{{ lease.address }}</strong></p>
+                <p>Tenant: <strong>{{ lease.tenant_first_name }} {{ lease.tenant_last_name }}</strong></p>
+                <p>Monthly Rent: <strong>₹{{ "%.2f"|format(lease.monthly_rent) }}</strong></p>
+            </div>
+
+            <form method="POST" class="needs-validation" novalidate>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="amount" class="form-label">Payment Amount (₹)*</label>
+                        <input type="number" name="amount" id="amount" class="form-control" min="0.01" step="0.01" value="{{ lease.monthly_rent }}" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="payment_date" class="form-label">Payment Date*</label>
+                        <input type="date" name="payment_date" id="payment_date" class="form-control" value="{{ today }}" required>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="payment_method" class="form-label">Payment Method*</label>
+                        <select name="payment_method" id="payment_method" class="form-select" required>
+                            <option value="cash">Cash</option>
+                            <option value="check">Check</option>
+                            <option value="credit_card">Credit Card</option>
+                            <option value="bank_transfer">Bank Transfer</option>
+                            <option value="online">Online</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="payment_status" class="form-label">Payment Status*</label>
+                        <select name="payment_status" id="payment_status" class="form-select" required>
+                            <option value="completed" selected>Completed</option>
+                            <option value="pending">Pending</option>
+                            <option value="failed">Failed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="transaction_reference" class="form-label">Transaction Reference (Optional)</label>
+                    <input type="text" name="transaction_reference" id="transaction_reference" class="form-control" placeholder="Check #, confirmation number, etc.">
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{{ url_for('leases.view_lease', lease_id=lease.lease_id) }}" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Record Payment</button>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">* Required fields</small>
+        </div>
+    </div>
+</div>
+{% endblock %} 

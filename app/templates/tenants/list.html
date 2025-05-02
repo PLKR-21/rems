@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}Tenants - Real Estate Management{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Tenants</h1>
+        <a href="{{ url_for('tenants.add_tenant') }}" class="btn btn-info">
+            <i class="bi bi-plus-circle"></i> Add New Tenant
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="input-group">
+                <input type="text" id="tenantSearch" class="form-control" placeholder="Search tenants...">
+                <button class="btn btn-outline-secondary" type="button">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            {% if tenants %}
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Registration Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tenant in tenants %}
+                                <tr>
+                                    <td>{{ tenant.tenant_id }}</td>
+                                    <td>{{ tenant.first_name }} {{ tenant.last_name }}</td>
+                                    <td>{{ tenant.email }}</td>
+                                    <td>{{ tenant.phone }}</td>
+                                    <td>{{ tenant.registration_date }}</td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{{ url_for('tenants.view_tenant', tenant_id=tenant.tenant_id) }}" class="btn btn-info">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <a href="{{ url_for('tenants.edit_tenant', tenant_id=tenant.tenant_id) }}" class="btn btn-warning">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ tenant.tenant_id }}">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                        
+                                        <!-- Delete Modal -->
+                                        <div class="modal fade" id="deleteModal{{ tenant.tenant_id }}" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Confirm Deletion</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Are you sure you want to delete tenant {{ tenant.first_name }} {{ tenant.last_name }}?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        <form action="{{ url_for('tenants.delete_tenant', tenant_id=tenant.tenant_id) }}" method="post">
+                                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-center">No tenants found. <a href="{{ url_for('tenants.add_tenant') }}">Add a new tenant</a>.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Simple client-side search functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('tenantSearch');
+        searchInput.addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const tableRows = document.querySelectorAll('tbody tr');
+            
+            tableRows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if(text.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+{% endblock %} 

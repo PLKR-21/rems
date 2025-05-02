@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Owner - Real Estate Management{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Edit Owner</h1>
+        <a href="{{ url_for('owners.view_owner', owner_id=owner.owner_id) }}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Owner Details
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form method="post" action="{{ url_for('owners.edit_owner', owner_id=owner.owner_id) }}">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="first_name" class="form-label">First Name*</label>
+                        <input type="text" name="first_name" id="first_name" class="form-control" value="{{ owner.first_name }}" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="last_name" class="form-label">Last Name*</label>
+                        <input type="text" name="last_name" id="last_name" class="form-control" value="{{ owner.last_name }}" required>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">Email*</label>
+                        <input type="email" name="email" id="email" class="form-control" value="{{ owner.email }}" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="phone" class="form-label">Phone Number*</label>
+                        <input type="tel" name="phone" id="phone" class="form-control" value="{{ owner.phone }}" required>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="address" class="form-label">Address*</label>
+                        <input type="text" name="address" id="address" class="form-control" value="{{ owner.address }}" required>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="join_date" class="form-label">Join Date*</label>
+                        <input type="date" name="join_date" id="join_date" class="form-control" value="{{ owner.join_date }}" required>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{{ url_for('owners.view_owner', owner_id=owner.owner_id) }}" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">* Required fields</small>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Real Estate Management{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Dashboard</h1>
+    
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Properties</h5>
+                    <h2 class="display-4">{{ property_count }}</h2>
+                    <p class="card-text">
+                        <span class="badge bg-light text-dark">{{ available_properties }} Available</span>
+                        <span class="badge bg-light text-dark">{{ leased_properties }} Leased</span>
+                    </p>
+                    <a href="{{ url_for('properties.list_properties') }}" class="btn btn-light">View All</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Owners</h5>
+                    <h2 class="display-4">{{ owner_count }}</h2>
+                    <p class="card-text">Property owners registered in the system</p>
+                    <a href="{{ url_for('owners.list_owners') }}" class="btn btn-light">View All</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Tenants</h5>
+                    <h2 class="display-4">{{ tenant_count }}</h2>
+                    <p class="card-text">Registered tenants in the system</p>
+                    <a href="{{ url_for('tenants.list_tenants') }}" class="btn btn-light">View All</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card bg-warning text-dark">
+                <div class="card-body">
+                    <h5 class="card-title">Leases</h5>
+                    <h2 class="display-4">{{ lease_count }}</h2>
+                    <p class="card-text">
+                        <span class="badge bg-light text-dark">{{ active_leases }} Active</span>
+                    </p>
+                    <a href="{{ url_for('leases.list_leases') }}" class="btn btn-light">View All</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Payments</h5>
+                    <h2 class="display-4">{{ payment_count }}</h2>
+                    <p class="card-text">Total payment records in the system</p>
+                    <a href="{{ url_for('payments.list_payments') }}" class="btn btn-light">View All</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    Property Distribution
+                </div>
+                <div class="card-body">
+                    <canvas id="propertyChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    Quick Actions
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-3">
+                        <a href="{{ url_for('properties.add_property') }}" class="btn btn-outline-primary">
+                            <i class="bi bi-plus-circle"></i> Add New Property
+                        </a>
+                        <a href="{{ url_for('owners.add_owner') }}" class="btn btn-outline-success">
+                            <i class="bi bi-plus-circle"></i> Add New Owner
+                        </a>
+                        <a href="{{ url_for('tenants.add_tenant') }}" class="btn btn-outline-info">
+                            <i class="bi bi-plus-circle"></i> Add New Tenant
+                        </a>
+                        <a href="{{ url_for('leases.add_lease') }}" class="btn btn-outline-warning">
+                            <i class="bi bi-plus-circle"></i> Create New Lease
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Property Chart
+        var ctx = document.getElementById('propertyChart').getContext('2d');
+        var propertyChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Available', 'Leased', 'Sold'],
+                datasets: [{
+                    data: [{{ available_properties }}, {{ leased_properties }}, {{ property_count - available_properties - leased_properties }}],
+                    backgroundColor: [
+                        '#28a745',  // green for available
+                        '#007bff',  // blue for leased
+                        '#dc3545'   // red for sold
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %} 

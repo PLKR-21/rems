@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Property - Real Estate Management{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Edit Property</h1>
+        <a href="{{ url_for('properties.view_property', property_id=property.property_id) }}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Property Details
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form method="post" action="{{ url_for('properties.edit_property', property_id=property.property_id) }}">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="property_type" class="form-label">Property Type*</label>
+                        <select name="property_type" id="property_type" class="form-select" required>
+                            <option value="">Select Type</option>
+                            <option value="house" {% if property.property_type == 'house' %}selected{% endif %}>House</option>
+                            <option value="apartment" {% if property.property_type == 'apartment' %}selected{% endif %}>Apartment</option>
+                            <option value="commercial" {% if property.property_type == 'commercial' %}selected{% endif %}>Commercial</option>
+                            <option value="land" {% if property.property_type == 'land' %}selected{% endif %}>Land</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="owner_id" class="form-label">Owner*</label>
+                        <select name="owner_id" id="owner_id" class="form-select" required>
+                            <option value="">Select Owner</option>
+                            {% for owner in owners %}
+                                <option value="{{ owner.owner_id }}" {% if property.owner_id == owner.owner_id %}selected{% endif %}>
+                                    {{ owner.first_name }} {{ owner.last_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="address" class="form-label">Address*</label>
+                        <input type="text" name="address" id="address" class="form-control" value="{{ property.address }}" required>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="city" class="form-label">City*</label>
+                        <input type="text" name="city" id="city" class="form-control" value="{{ property.city }}" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="state" class="form-label">State*</label>
+                        <input type="text" name="state" id="state" class="form-control" value="{{ property.state }}" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="postal_code" class="form-label">Postal Code*</label>
+                        <input type="text" name="postal_code" id="postal_code" class="form-control" value="{{ property.postal_code }}" required>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="country" class="form-label">Country</label>
+                        <input type="text" name="country" id="country" class="form-control" value="{{ property.country }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="size_sqft" class="form-label">Size (sq ft)*</label>
+                        <input type="number" name="size_sqft" id="size_sqft" class="form-control" step="0.01" min="0" value="{{ property.size_sqft }}" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="year_built" class="form-label">Year Built</label>
+                        <input type="number" name="year_built" id="year_built" class="form-control" min="1800" max="2100" value="{{ property.year_built }}">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="num_bedrooms" class="form-label">Bedrooms</label>
+                        <input type="number" name="num_bedrooms" id="num_bedrooms" class="form-control" min="0" value="{{ property.num_bedrooms }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="num_bathrooms" class="form-label">Bathrooms</label>
+                        <input type="number" name="num_bathrooms" id="num_bathrooms" class="form-control" step="0.5" min="0" value="{{ property.num_bathrooms }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="listing_price" class="form-label">Listing Price (₹)</label>
+                        <input type="number" name="listing_price" id="listing_price" class="form-control" step="0.01" min="0" value="{{ property.listing_price }}">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="listing_status" class="form-label">Listing Status*</label>
+                        <select name="listing_status" id="listing_status" class="form-select" required>
+                            <option value="available" {% if property.listing_status == 'available' %}selected{% endif %}>Available</option>
+                            <option value="leased" {% if property.listing_status == 'leased' %}selected{% endif %}>Leased</option>
+                            <option value="sold" {% if property.listing_status == 'sold' %}selected{% endif %}>Sold</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea name="description" id="description" class="form-control" rows="4">{{ property.description }}</textarea>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{{ url_for('properties.view_property', property_id=property.property_id) }}" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">* Required fields</small>
+        </div>
+    </div>
+</div>
+{% endblock %} 

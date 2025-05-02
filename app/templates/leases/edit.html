@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Lease - Real Estate Management{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Edit Lease</h1>
+        <a href="{{ url_for('leases.view_lease', lease_id=lease.lease_id) }}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Lease Details
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form method="post" action="{{ url_for('leases.edit_lease', lease_id=lease.lease_id) }}">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Property</label>
+                        <p class="form-control-plaintext">{{ lease.address }} ({{ lease.property_type|capitalize }})</p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Tenant</label>
+                        <p class="form-control-plaintext">{{ lease.tenant_first_name }} {{ lease.tenant_last_name }}</p>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="start_date" class="form-label">Start Date*</label>
+                        <input type="date" name="start_date" id="start_date" class="form-control" value="{{ lease.start_date }}" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="end_date" class="form-label">End Date*</label>
+                        <input type="date" name="end_date" id="end_date" class="form-control" value="{{ lease.end_date }}" required>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="monthly_rent" class="form-label">Monthly Rent (₹)*</label>
+                        <input type="number" name="monthly_rent" id="monthly_rent" class="form-control" min="0" step="0.01" value="{{ lease.monthly_rent }}" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="security_deposit" class="form-label">Security Deposit (₹)*</label>
+                        <input type="number" name="security_deposit" id="security_deposit" class="form-control" min="0" step="0.01" value="{{ lease.security_deposit }}" required>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="payment_due_day" class="form-label">Payment Due Day*</label>
+                        <input type="number" name="payment_due_day" id="payment_due_day" class="form-control" min="1" max="31" value="{{ lease.payment_due_day }}" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="lease_status" class="form-label">Lease Status*</label>
+                        <select name="lease_status" id="lease_status" class="form-select" required>
+                            <option value="active" {% if lease.lease_status == 'active' %}selected{% endif %}>Active</option>
+                            <option value="expired" {% if lease.lease_status == 'expired' %}selected{% endif %}>Expired</option>
+                            <option value="terminated" {% if lease.lease_status == 'terminated' %}selected{% endif %}>Terminated</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> 
+                    <strong>Note:</strong> Changing the lease status to "Expired" or "Terminated" will make the property available for new leases.
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{{ url_for('leases.view_lease', lease_id=lease.lease_id) }}" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">* Required fields</small>
+        </div>
+    </div>
+</div>
+{% endblock %} 

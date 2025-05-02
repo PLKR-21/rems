@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}Owners - Real Estate Management{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Property Owners</h1>
+        <a href="{{ url_for('owners.add_owner') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Add New Owner
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="input-group">
+                <input type="text" id="ownerSearch" class="form-control" placeholder="Search owners...">
+                <button class="btn btn-outline-secondary" type="button">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            {% if owners %}
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Join Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for owner in owners %}
+                                <tr>
+                                    <td>{{ owner.owner_id }}</td>
+                                    <td>{{ owner.first_name }} {{ owner.last_name }}</td>
+                                    <td>{{ owner.email }}</td>
+                                    <td>{{ owner.phone }}</td>
+                                    <td>{{ owner.join_date }}</td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{{ url_for('owners.view_owner', owner_id=owner.owner_id) }}" class="btn btn-info">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <a href="{{ url_for('owners.edit_owner', owner_id=owner.owner_id) }}" class="btn btn-warning">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ owner.owner_id }}">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                        
+                                        <!-- Delete Modal -->
+                                        <div class="modal fade" id="deleteModal{{ owner.owner_id }}" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Confirm Deletion</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Are you sure you want to delete owner {{ owner.first_name }} {{ owner.last_name }}?</p>
+                                                        {% if owner.properties_count > 0 %}
+                                                            <div class="alert alert-warning">
+                                                                This owner has properties. You cannot delete an owner with properties.
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        <form action="{{ url_for('owners.delete_owner', owner_id=owner.owner_id) }}" method="post">
+                                                            <button type="submit" class="btn btn-danger" {% if owner.properties_count > 0 %}disabled{% endif %}>Delete</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-center">No owners found. <a href="{{ url_for('owners.add_owner') }}">Add a new owner</a>.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Simple client-side search functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('ownerSearch');
+        searchInput.addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const tableRows = document.querySelectorAll('tbody tr');
+            
+            tableRows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if(text.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+{% endblock %} 

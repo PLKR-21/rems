@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Error - Real Estate Management{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card border-danger">
+        <div class="card-header bg-danger text-white">
+            <h4>An Error Occurred</h4>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{ error.code }} Error</h5>
+            <p class="card-text">{{ error }}</p>
+            
+            {% if config.DEBUG %}
+                <div class="mt-4">
+                    <h6>Debug Information:</h6>
+                    <pre class="bg-light p-3">{{ error.description }}</pre>
+                </div>
+            {% endif %}
+            
+            <a href="{{ url_for('main.index') }}" class="btn btn-primary mt-3">Return to Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %} 
