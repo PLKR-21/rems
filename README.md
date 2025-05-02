@@ -78,11 +78,6 @@ The application uses the following database tables:
 - Tenants
 - Leases
 - Payments
-- Maintenance_Requests
-- Property_Features
-- Employees
-- Maintenance_Assignments
-- Property_Images
 
 ## License
 
