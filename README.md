@@ -68,7 +68,7 @@ mysql -u root -p < create_database.sql
 flask run
 ```
 
-7. Access the application at http://localhost:5000
+7. Access the application at https://rems-two-khaki.vercel.app/
 
 ## Database Schema
 
